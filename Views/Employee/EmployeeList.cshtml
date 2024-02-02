@@ -1,0 +1,75 @@
+﻿@model List<Crud_Task.Context.Employee>
+@{
+    ViewBag.Title = "EmployeeList";
+}
+
+<div>
+    <a href="@Url.Action("Employee")" class="btn btn-primary">
+        <i class="fas fa-plus"></i> Create New
+    </a>
+</div>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Mobile</th>
+            <th>Description</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Email</td>
+                <td>@item.Mobile</td>
+                <td>@item.Description</td>
+                <td>
+                    <a href="@Url.Action("Employee", new { item.Id, item.Name, item.Email, item.Mobile, item.Description })" class="btn btn-success">
+                        <i class="fas fa-edit"></i> Edit
+                    </a>
+                    <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal_@item.Id">
+                        <i class="fas fa-trash-alt"></i> Delete
+                    </a>
+                </td>
+            </tr>
+
+            <div class="modal fade" id="deleteModal_@item.Id" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel_@item.Id" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteModalLabel_@item.Id">Confirm Delete</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to delete the employee: <strong>@item.Name</strong>?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <a href="@Url.Action("ConfirmDelete", new { id = item.Id })" class="btn btn-danger">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </tbody>
+</table>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<script>
+    $(document).ready(function () {
+        $('table.table-hover tbody').on('mouseenter', 'tr', function () {
+            $(this).addClass('table-active');
+        });
+
+        $('table.table-hover tbody').on('mouseleave', 'tr', function () {
+            $(this).removeClass('table-active');
+        });
+    });
+</script>
